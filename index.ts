@@ -1,4 +1,3 @@
-import * as J from 'joi';
 import { Schema, ValidationErrorItem, ValidationOptions } from 'joi';
 import { Context } from 'koa';
 
@@ -28,19 +27,27 @@ export namespace RequestValidation {
     export const PARAMS = 'params';
   }
 
+  export interface Options {
+    body?: ValidationOptions;
+    query?: ValidationOptions;
+    params?: ValidationOptions;
+  }
+
   /**
    *
    * @param {Application.Context} ctx
    * @param {RequestValidation.Rules} rules
+   * @param {RequestValidation.Options} options
    * @returns {T}
    */
-  export function validate<T>(ctx: Context, rules: Rules): T {
+  export function validate<T>(ctx: Context, rules: Rules, options: Options = {}): T {
     const result: any = {};
 
     if (rules.body) {
       result.body = validateItem(Scope.BODY, ctx.request.body, rules.body, {
         abortEarly: false,
         presence: 'required',
+        ...options.body,
       });
     }
 
@@ -48,6 +55,7 @@ export namespace RequestValidation {
       result.query = validateItem(Scope.QUERY, ctx.query, rules.query, {
         abortEarly: false,
         presence: 'optional',
+        ...options.query,
       });
     }
 
@@ -55,6 +63,7 @@ export namespace RequestValidation {
       result.params = validateItem(Scope.PARAMS, ctx.params, rules.params, {
         abortEarly: false,
         presence: 'required',
+        ...options.params,
       });
     }
 
@@ -70,7 +79,7 @@ export namespace RequestValidation {
    * @returns {any}
    */
   function validateItem(scope: string, input: any, schema: Schema, options: ValidationOptions) {
-    const validationResult = J.validate(input, schema, options);
+    const validationResult = schema.validate(input, options);
 
     if (validationResult.error) {
       throw new Error(scope, validationResult.error.details);

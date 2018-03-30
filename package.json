@@ -5,11 +5,12 @@
   "main": "index.js",
   "typings": "index.d.ts",
   "scripts": {
+    "pretest": "rm -rf *.js *.map *.d.ts",
     "test": "nyc mocha --require ts-node/register index.spec.ts",
     "lint": "tslint --project .",
     "lint:fix": "tslint --project . --fix",
     "build": "tsc",
-    "prepublish": "npm run lint && npm run build"
+    "prepublish": "npm run lint && npm run test && npm run build"
   },
   "keywords": [
     "request",
