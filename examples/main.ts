@@ -1,6 +1,6 @@
 import * as Joi from 'joi';
 import { Context } from 'koa';
-import { RequestValidation } from '../index';
+import { RequestValidation } from '../src/index';
 
 interface Request {
   body: {

@@ -1,7 +1,13 @@
 import { Schema, ValidationErrorItem, ValidationOptions } from 'joi';
-import { Context } from 'koa';
 
 export namespace RequestValidation {
+  export interface Context {
+    params: object;
+    query: object;
+    request: {
+      body: object;
+    };
+  }
 
   export interface Rules {
     body?: Schema;
@@ -35,7 +41,7 @@ export namespace RequestValidation {
 
   /**
    *
-   * @param {Application.Context} ctx
+   * @param {Context} ctx
    * @param {RequestValidation.Rules} rules
    * @param {RequestValidation.Options} options
    * @returns {T}
