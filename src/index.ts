@@ -1,4 +1,7 @@
+import * as J from 'joi';
 import { Schema, ValidationErrorItem, ValidationOptions } from 'joi';
+
+export { J };
 
 export namespace RequestValidation {
   export interface Context {
