@@ -5,10 +5,10 @@ export { J };
 
 export namespace RequestValidation {
   export interface Context {
-    params: object;
-    query: object;
+    params: { [key: string]: any };
+    query: { [key: string]: any };
     request: {
-      body: object;
+      body: any;
     };
   }
 
